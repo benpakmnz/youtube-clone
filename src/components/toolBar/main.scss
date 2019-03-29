@@ -1,0 +1,14 @@
+.dropdown-list{
+    position: absolute;
+    background: white;
+    padding: 15px;
+    width: 300px;
+    box-shadow: 0 7px 30px -13px rgba(0, 0, 0, 0.2);
+    top: 50px;
+    z-index: 700; 
+}
+
+.dropdownContainer{
+    display: flex;
+    flex-direction: column
+}

@@ -1,0 +1,1 @@
+export const CHANGE_DRAWER_MODE = 'CHANGE_DRAWER_MODE';

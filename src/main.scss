@@ -1,0 +1,32 @@
+$colors: (
+    ytBlack: rgba(0, 0, 0, 0.1), 
+    ytDarkGrey: #606060, 
+    ytGrey: #626262, 
+    ytLightGrey:#d3d3d3,
+    ytDrawerBg: #f5f5f5,
+    ytRed: #ff0000
+    );
+
+$main-fontWeight: 300;
+$shadow: 0 7px 30px -13px map-get($colors, ytGrey);
+$border-raduis: 50px;
+$main-list-size: 40px;
+$header-height: 56px;
+
+
+
+.icons, .iconsActivated{
+    margin-right: 8px;
+    padding: 8px;
+    
+}
+
+.icons{
+    width: $main-list-size;   
+    height: $main-list-size;
+    fill: map-get($colors, ytDarkGrey);
+}
+
+.iconsActivated{
+    fill: map-get($colors, ytRed)
+}

@@ -1,0 +1,67 @@
+@import '../../main.scss';
+
+.drawerContainer{
+    height: calc(100vh - 56px);
+    width: 240px;
+    background: map-get($colors, ytDrawerBg);
+    position: fixed;
+    z-index: 400;
+    top: $header-height;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    padding: 12px 0;
+
+    .sectionTitle{
+        padding: 15px 25px 10px 25px;  
+        font-weight: 600;
+        
+    }
+
+    ul{
+        padding: 0px;
+        padding-inline-start: 0;
+        display: block;
+        list-style-type: none;
+        margin-block-start: 0;
+        margin-block-end: 0;
+        
+
+    }
+    li{
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 0 16px;
+        cursor: pointer;
+        
+    }
+
+    li:hover{
+        background: map-get($colors, ytLightGrey)
+    }
+
+    hr{
+      border-top: map-get($colors, ytBlack) 1px solid;  
+    }
+
+    .links{
+        padding: 0 30px;
+    }
+}
+
+.drawerContainer:hover{
+    overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #bebebe; 
+}
+::-webkit-scrollbar-track {
+
+    background: #f5f5f5; 
+  }
+

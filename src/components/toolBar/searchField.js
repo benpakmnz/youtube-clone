@@ -6,8 +6,7 @@ import './toolBar.scss';
 const SearchField = () => {
     return(
         <div className ="searchField">
-           <input style={{height: 31, padding: 2, boxSizing: 'border-box', width: '50vw',
-           maxWidth: 515, border: 'solid #d3d3d3 1px',borderRadius: '0 2px 2px 0' }} placeholder="Search"></input>
+           <input placeholder="Search"></input>
            <button>
             <IconsContainer className="searchIcon"  path={toolBarIcons.searchIcon}/>
           </button>
