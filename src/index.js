@@ -9,9 +9,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import drawerHandlerReducer from './store/reducers/drawerHandlerReducer';
+import fetchMoviesReducer from './store/reducers/fetchMoviesReducer';
 
 const rootReducer = combineReducers({
-    drawerModeReducer: drawerHandlerReducer
+    drawerModeReducer: drawerHandlerReducer,
+    fetchMoviesReducer: fetchMoviesReducer
 })
 
 const logger = store => {

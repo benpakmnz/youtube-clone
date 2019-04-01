@@ -1,1 +1,2 @@
 export const CHANGE_DRAWER_MODE = 'CHANGE_DRAWER_MODE';
+export const SET_MOVIE_LIST= 'SET_MOVIE_LIST';

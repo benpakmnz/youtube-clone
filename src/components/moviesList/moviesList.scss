@@ -1,4 +1,9 @@
+@import '../../main.scss';
+
 .movieListContainer{
     display: flex;
-    justify-content: center; 
+    flex-wrap: wrap;
+    overflow-y: hidden;
+    // height: 240px;
+    // width: 95%;
 }

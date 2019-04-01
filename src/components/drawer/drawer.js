@@ -18,7 +18,7 @@ class Drawer extends Component {
     renderList = (listType, title) => {
         return(
             <section className='drawer'>
-                {title ? <div className="sectionTitle">{title}</div> : null}
+                {title ? <div className="h3 sectionTitle">{title}</div> : null}
                 <ul>
                     {listType.map(item =>
                         <li style={{display: 'flex', alignItems: 'center', background: this.state.activated === item.linkTitle ? '#d6d6d6': null}} key={item.linkTitle}>
