@@ -16,23 +16,6 @@ export const setMovieList = (payload) => {
 
 export const initMovies = () => {
     let moviesInitialList = [
-        '22GGe2QNenk',
-        'jV1sjm9Lz_Q',
-        't0VB_0YDZ1w',
-        'tT088stKYmI',
-        'JPJjwHAIny4',
-        'nI8n20UpaBY',
-        '4g9mJjJ9WU0',
-        '22GGe2QNenk',
-        'jV1sjm9Lz_Q',
-        't0VB_0YDZ1w',
-        'tT088stKYmI',
-        'JPJjwHAIny4',
-        'nI8n20UpaBY',
-        '4g9mJjJ9WU0',
-        'GC_4lBFZl_Y',
-        'mF-tVjXbO8Y',
-        'T2KbMeS9lLQ',
         'BMUiFMZr7vk',
         'W4brAobC2Hc',
         'ZpU3mEaK0_w',
