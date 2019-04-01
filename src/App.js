@@ -23,7 +23,7 @@ class App extends Component {
                       width: this.props.drawerMode ? `calc(99vw - 236px)` : 'unset',
                       marginLeft: this.props.drawerMode ? 240 : 'unset',
                       padding: this.props.drawerMode ? '1px 128px' : '1px 36px',
-                      height: 'vh'}}>
+                      height: '100vh'}}>
                       <MoviesList/>
                       
         </main>
