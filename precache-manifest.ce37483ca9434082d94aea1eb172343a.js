@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/youtubeClone/static/js/runtime~main.38d922f7.js"
   },
   {
-    "revision": "e14183a4c3b8064c8f4a",
-    "url": "/youtubeClone/static/js/main.e14183a4.chunk.js"
+    "revision": "e78996aa208d881b9318",
+    "url": "/youtubeClone/static/js/main.e78996aa.chunk.js"
   },
   {
     "revision": "e62891a0b84027c9ef32",
     "url": "/youtubeClone/static/js/1.e62891a0.chunk.js"
   },
   {
-    "revision": "e14183a4c3b8064c8f4a",
+    "revision": "e78996aa208d881b9318",
     "url": "/youtubeClone/static/css/main.abac2ae0.chunk.css"
   },
   {
-    "revision": "c27dcbb9e8783364963fcf5258195580",
+    "revision": "963d41c4d828262d9a030e73644d496c",
     "url": "/youtubeClone/index.html"
   }
 ];
