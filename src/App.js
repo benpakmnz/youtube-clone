@@ -14,15 +14,22 @@ class App extends Component {
     this.props.setMoviesList()
   }
   render() {
- 
     return (
       <Fragment>
         <ToolBar/>
         {this.props.drawerMode? <Drawer/> : null}
-        <main style={{background:'#FAFAFA', boxSizing: 'border-box', marginTop: 56,
-                      width: this.props.drawerMode ? `calc(99vw - 236px)` : 'unset',
-                      marginLeft: this.props.drawerMode ? 240 : 'unset',
+        <main style={{background:'#FAFAFA', boxSizing: 'border-box',
+                      width: this.props.drawerMode ? `calc(100vw - 240px)` : '100vw',
+                      display:'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      position: 'absolute',
+                      right: 0,
+                      top: 56,
                       padding: this.props.drawerMode ? '1px 128px' : '1px 36px'}}>
+                      <MoviesList/>
+                      <MoviesList/>
+                      <MoviesList/>
                       <MoviesList/>
                       
         </main>

@@ -23,7 +23,7 @@ export const initMovies = () => {
         '9ooYYRLdg_g',
         'OAR0E72hFyA',
         'pkdgVYehiTE',
-        'RRJo_TXdqPg'
+        'RRJo_TXdqPg',
     ]
 
     return dispatch => { 
