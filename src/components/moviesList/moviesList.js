@@ -88,7 +88,7 @@ class MoviesList extends Component{
             })
         
             return(
-            <div>
+            <div style={{maxWidth: 1284}}>
             <h2 style={{margin: '25px 0'}}>Recommended</h2>
             <div className="movieListContainer">
             {renderMovieList}
