@@ -12,7 +12,7 @@ const MovieItem = (props) => (
             <div className="movieItemInfo">
                 <h4 style= {{paddingRight: 15, marginBottom: 5}}>{props.title}</h4>
                 <p style={{fontSize: 13, fontWeight:400}}>{props.channel}<br/>
-                {props.views}views | {props.published}</p>
+                {props.views}views • {props.published}</p>
             </div>
         </div>
 
