@@ -7,12 +7,8 @@ import './moviesList.scss'
 
 
 class MoviesList extends Component{
-    
-
-
     render(){
         const renderMovieList = 
-            
             this.props.moviesList.map(movieItem => {
                 const thumbTitle = 
                 movieItem.items[0].snippet.title.length > 50 ? `
@@ -28,46 +24,56 @@ class MoviesList extends Component{
                 function dateDiffInDays(a,b){
                     const utc1= Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
                     const utc2= Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-                    return Math.floor((utc2-utc1)/ _MS_PER_DAY)
-                }
+                    let pubAmount= Math.floor((utc2-utc1)/ _MS_PER_DAY)
+                    let published = '';
+                    if (pubAmount >= 7 && pubAmount < 14 ){
+                        published = '1 week ago'
+                    }
+                    else if (pubAmount >= 14 && pubAmount < 30){
+                        let a = pubAmount/7
+                        published = `${a.toFixed()} weeks ago`
+                    }
+                        else if (pubAmount >= 30 && pubAmount < 60){
+                        published = `1 month ago`
+                    }
+                        else if (pubAmount >= 60 && pubAmount < 365){
+                        let a = pubAmount/30
+                        published = `${a.toFixed()} months ago`
+                    }
+                        else if (pubAmount >= 365 && pubAmount < 730){
+                        published = `1 year ago`
+                    }
+                        else if (pubAmount >= 730){
+                        let a = pubAmount/365
+                        published = `${a.toFixed()} years ago`
+                    }
+                    
+                        return published
+                    }
                 
-                const publishedClac = dateDiffInDays(pub, now) + 'days'
-                console.log(movieItem.items[0].contentDetails.duration)
-
+                
+                const publishedClac = dateDiffInDays(pub, now)
 
                 function convert_time(duration) {
-                    var a = duration.match(/\d+/g);              
-                
-                    if (duration.indexOf('M') >= 0 && duration.indexOf('H') === -1 && duration.indexOf('S') === -1) {
-                        a = [0, a[0], 0];
-                    }
-                
-                    if (duration.indexOf('H') >= 0 && duration.indexOf('M') === -1) {
-                        a = [a[0], 0, a[1]];
-                    }
-                
-                    if (duration.indexOf('H') >= 0 && duration.indexOf('M') === -1 && duration.indexOf('S') === -1) {
-                        a = [a[0], 0, 0];
-                    }
-                
-                    duration = 0;
-                
-                    if (a.length === 3) {
-                        duration = duration + parseInt(a[0]) * 3600;
-                        duration = duration + parseInt(a[1]) * 60;
-                        duration = duration + parseInt(a[2]);
-                    }
-                
-                    if (a.length === 2) {
-                        duration = duration + parseInt(a[0]) * 60;
-                        duration = duration + parseInt(a[1]);
-                    }
-                
-                    if (a.length === 1) {
-                        duration = duration + parseInt(a[0]);
-                    }
-                
-                    return parseFloat(duration/60).toFixed(2)
+                    let timer= duration.replace(/\D/g,' ')
+                                    .split(' ')
+                                    .filter(char => char !== "")
+                                    .map(char => char.length <2 ? '0'+ char: char)
+                                    .join(':')
+                    return timer
+                }
+
+                let viewsCalc = (amount) => {
+                    let views= amount
+                    if (amount.length === 4){
+                      views = amount.substring(0,1) + 'K '
+                    } else if (amount.length === 5){
+                      views = amount.substring(0,2) + 'K '
+                    } else if (amount.length === 6){
+                      views = amount.substring(0,3) + 'K '
+                    } else if (amount.length === 7){
+                      views = amount.substring(0,3) + 'M '
+                    } return(views)
                 }
  
                 
@@ -76,7 +82,7 @@ class MoviesList extends Component{
                                img={movieItem.items[0].snippet.thumbnails.medium.url}
                                channel={thumbChannel}
                                published={publishedClac}
-                               views={movieItem.items[0].statistics.viewCount}
+                               views={viewsCalc(movieItem.items[0].statistics.viewCount)}
                                duration={convert_time(movieItem.items[0].contentDetails.duration)}/>
                 )
             })

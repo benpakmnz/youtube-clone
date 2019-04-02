@@ -10,8 +10,8 @@ const MovieItem = (props) => (
          <div style={{color:'white',background: '#0000008c', padding: '2px 5px',position: 'absolute', top: 96, right: 3, fontSize: 12, fontWeight: 'bold' }}>{props.duration}</div>              
             <img src= {props.img} alt={props.title}/>
             <div className="movieItemInfo">
-                <h4 style= {{paddingRight: 15}}>{props.title}</h4>
-                <p>{props.channel}<br/>
+                <h4 style= {{paddingRight: 15, marginBottom: 5}}>{props.title}</h4>
+                <p style={{fontSize: 13, fontWeight:400}}>{props.channel}<br/>
                 {props.views}views | {props.published}</p>
             </div>
         </div>
