@@ -1,19 +1,22 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import './movieItem.scss';
 
 
 
 const MovieItem = (props) => (
         
-        <div className="movieItemContainer">
-         <div style={{color:'white',background: '#0000008c', padding: '2px 5px',position: 'absolute', top: 96, right: 3, fontSize: 12, fontWeight: 'bold' }}>{props.duration}</div>              
-            <img src= {props.img} alt={props.title}/>
-            <div className="movieItemInfo">
-                <h4 style= {{paddingRight: 15, marginBottom: 5}}>{props.title}</h4>
-                <p style={{fontSize: 13, fontWeight:400}}>{props.channel}<br/>
-                {props.views}views • {props.published}</p>
-            </div>
+        <div className={props.type === 'home' ? 'movieItemContainer home': 'movieItemContainer'}>
+            <Link to={`/watch/${props.videoId}`} style={props.type !== 'home' ? {flexDirection: 'row'} : null}>
+                <div className={props.type === 'home' ? 'thumbnail' : 'thumbnail small'} >
+                    <div className='duration'>{props.duration}</div>              
+                    <img src= {props.img} alt={props.title}/></div>
+                <div className="movieItemInfo" style={props.type !== 'home' ? {marginLeft: 10}: {marginTop: 10}}>
+                    <h4>{props.title}</h4>
+                    <p>{props.channel}<br/>
+                    {props.views}views • {props.published}</p>
+                </div>
+            </Link>
         </div>
 
         

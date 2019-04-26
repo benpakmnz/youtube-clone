@@ -1,8 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import ToolBar from './components/toolBar/toolBar';
 import Drawer from './components/drawer/drawer';
+import { BrowserRouter, Route } from 'react-router-dom';
 import './normalize.css';
-import MoviesList from './components/moviesList/moviesList';
+import Main from './components/main/main';
+import Watch from './components/watch/watch'
 import * as actionCreators from './store/actions/index'
 
 import { connect } from 'react-redux';
@@ -11,31 +13,20 @@ import { connect } from 'react-redux';
 class App extends Component { 
 
   componentDidMount(){
-    this.props.setMoviesList()
+    this.props.setMoviesList()  
   }
+
   render() {
     return (
-      <Fragment>
+      <BrowserRouter>
         <ToolBar/>
         {this.props.drawerMode? <Drawer/> : null}
-        <main style={{background:'#FAFAFA', 
-                      boxSizing: 'border-box',
-                      width: this.props.drawerMode ? `calc(100vw - 240px)` : '100vw',
-                      padding: this.props.drawerMode ? '1px 128px': '1px 40px',
-                      position: 'absolute',
-                      right: 0,
-                      top: 56,
-                      display:'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center'
-                      }}>
-                      <MoviesList/>
-                      <MoviesList/>
-                      <MoviesList/>
-                      <MoviesList/>
-                      
-        </main>
-      </Fragment>
+        <Route path="/" exact render={()=> <Main drawerMode={this.props.drawerMode}/>}/>
+        <Route path="/trending" render={()=> <h1>dfgfdgfdg</h1>}/>
+        <Route path="/watch/:id" render={()=> <Watch drawerMode={this.props.drawerMode}/>}/>
+      </BrowserRouter>
+
+
     );
   }
 }

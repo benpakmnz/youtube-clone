@@ -4,5 +4,10 @@ export{
 
 export{
     setMovieList,
-    initMovies
+    initMovies,
+    setSelectedMovieComments,
+    initMovieComments,
+    reactionHandler,
+    fetchWatchMovie,
+    initChannelData
 } from './fetchMovies';

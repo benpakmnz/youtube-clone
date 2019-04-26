@@ -9,12 +9,13 @@ const drawerMode = (state= initialState, action) => {
         case actionTypes.CHANGE_DRAWER_MODE:
             return ({
                 ...state,
-                drawerMode: action.payload ? action.payload : !state.drawerMode
+                drawerMode: action.payload === undefined ? !state.drawerMode : action.payload
+                
             })
        
         default: return state
-    }
-    
-}
+        
+    }   
+} 
 
 export default drawerMode;

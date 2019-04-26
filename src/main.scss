@@ -4,7 +4,8 @@ $colors: (
     ytGrey: #626262, 
     ytLightGrey:#d3d3d3,
     ytDrawerBg: #f5f5f5,
-    ytRed: #ff0000
+    ytRed: #ff0000,
+    ytBlue: #065FD4
     );
 
 $main-fontWeight: 300;
@@ -43,4 +44,18 @@ hr{
 
 .iconsActivated{
     fill: map-get($colors, ytRed)
+}
+
+.mainContainer{
+    box-sizing: border-box;
+    position: absolute;
+    right: 0;
+    top: 56px;
+    background:#FAFAFA;
+}
+
+a{
+    text-decoration: none;
+    color: unset;
+    display: flex;
 }

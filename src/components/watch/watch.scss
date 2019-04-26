@@ -1,0 +1,64 @@
+@import "../../main.scss";
+
+.player{
+    height: 70vh;
+    background: black;
+}
+
+.mainWatch{
+    // width: 66%; 
+    box-sizing: border-box;
+    margin-right: 24px;
+
+}
+
+.movieTitle{
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+.movieInfo{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
+    padding: 20px 0;
+    
+}
+
+.upNextVideos{
+    box-sizing: border-box;
+}
+
+.watchContainer{
+    display: flex;
+    padding: 24px;
+}
+.usersInteractions
+{
+    display: flex;
+    align-items: center;
+
+    .selected{
+        color: map-get($colors, ytBlue);
+    }
+
+    .interactionActions{
+        margin: 0 5px 0 15px;
+        svg{
+            fill: map-get($colors, ytGrey);
+            width: 20px;
+            height: 20px;
+        }
+        
+    }
+    .interactionActionsSelected{
+        margin: 0 5px 0 15px;
+        svg{
+            fill: map-get($colors, ytBlue);
+            width: 20px;
+            height: 20px;
+        }
+    }
+}
+

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {drawerListTop, drawerListPersonal, drawerListSubscriptions, drawerListMore, drawerListSettings }   from '../../assets/drawerLists';
 import IconsContainer from '../../assets/iconsContainer';
-// import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
 
 import './drawer.scss';
 
@@ -21,9 +22,12 @@ class Drawer extends Component {
                 {title ? <div className="h3 sectionTitle">{title}</div> : null}
                 <ul>
                     {listType.map(item =>
-                        <li style={{display: 'flex', alignItems: 'center', background: this.state.activated === item.linkTitle ? '#d6d6d6': null}} key={item.linkTitle}>
-                            <IconsContainer className= {this.state.activated === item.linkTitle ? 'iconsActivated': "icons"} path={item.icon} />
-                        {item.linkTitle}
+                        <li style={{display: 'flex', alignItems: 'center', background: this.state.activated === item.linkTitle ? '#d6d6d6': null}} 
+                            key={item.linkTitle}>
+                            <NavLink to= {item.url ? '/' : `/${item.linkTitle.toLowerCase()}`}>
+                            <IconsContainer className= 
+                                 {this.state.activated === item.linkTitle ? 'iconsActivated': "icons"} path={item.icon}/>
+                            {item.linkTitle}</NavLink>
                         </li>
                     )}
                 </ul>

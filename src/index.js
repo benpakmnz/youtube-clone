@@ -10,10 +10,13 @@ import * as serviceWorker from './serviceWorker';
 
 import drawerHandlerReducer from './store/reducers/drawerHandlerReducer';
 import fetchMoviesReducer from './store/reducers/fetchMoviesReducer';
+import fetchSelectedMovieDataReducer from './store/reducers/fetchSelectedMovieDataReducer'
 
 const rootReducer = combineReducers({
     drawerModeReducer: drawerHandlerReducer,
-    fetchMoviesReducer: fetchMoviesReducer
+    fetchMoviesReducer: fetchMoviesReducer,
+    fetchSelectedMovieDataReducer: fetchSelectedMovieDataReducer
+
 })
 
 const logger = store => {
