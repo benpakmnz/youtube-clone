@@ -1,25 +1,27 @@
-import React from 'react';
+import React ,{ Component } from 'react';
 import MoviesList from '../moviesList/moviesList';
 import '../../main.scss';
-import { Route } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import Watch from '../watch/watch'
 
 
 
-const Main = (props) => (       
-        <div className="mainContainer" 
-                style={{width: props.drawerMode ? `calc(100vw - 240px)` : '100vw',
-                        padding: props.drawerMode ? '1px 128px': '1px 40px'}}>
-                          
-                          <Route path="/" exact render={()=> <MoviesList type='home'/>}/>
-                          <Route path="/watch/:id" render={()=> <Watch/>}/>
-        </div>
+class Main extends Component {
+        render(){
+        console.log(this.props)
+        return(
+                <div className="mainContainer" 
+                        style={{width: this.props.drawerMode ? `calc(100vw - 240px)` : '100vw',
+                        padding: this.props.drawerMode ? '1px 128px': '1px 40px'}}>
+                                
+                                <Route path="/" exact render={()=> <MoviesList type='home'/>}/>
+                                <Route path={this.props.match.url + ":id"} render={()=> <Watch/>}/>
+                </div>     
+        )}
+}
 
-        
-    )
 
 
-
-export default Main
+export default withRouter(Main)
 
 
