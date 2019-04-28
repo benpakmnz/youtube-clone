@@ -137,6 +137,7 @@ export const setSelectedMovieData = (payload) => {
             LikeCount:Number(payload.statistics.likeCount),
             DislikeCount: Number(payload.statistics.dislikeCount),
             FavoriteCount:Number(payload.favoriteCount),
+            CommentsCount: payload.statistics.commentCount,
             Description: payload.snippet.description,
             DescriptionShorten: description(payload.snippet.description),
             VideoId: payload.id,
@@ -180,6 +181,7 @@ export const setSelectedMovieComments = (payload) =>{
     return {
         type: actionTypes.SET_MOVIE_COMMENTS,
         payload:{
+            CommentId:payload.id,
             Comment: payload.snippet.topLevelComment.snippet.textDisplay,
             UserPic: payload.snippet.topLevelComment.snippet.authorProfileImageUrl.replace('s28','s40'),
             AuthorDisplayName: payload.snippet.topLevelComment.snippet.authorDisplayName,
@@ -193,6 +195,7 @@ export const initMovieComments = (MovieId) => {
     return dispatch => {
         axios.get(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${MovieId}&key=${API_KEY}`)
         .then(res => {
+            console.log(res.data)
             res.data.items.map(comment => 
             dispatch(setSelectedMovieComments(comment)))})
             .catch(error => console.log(error))

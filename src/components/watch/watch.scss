@@ -1,12 +1,12 @@
 @import "../../main.scss";
 
 .player{
-    height: 70vh;
+    height: -webkit-fill-available ;
     background: black;
 }
 
 .mainWatch{
-    // width: 66%; 
+    width: 66vw; 
     box-sizing: border-box;
     margin-right: 24px;
 
@@ -27,10 +27,12 @@
 }
 
 .upNextVideos{
+    width: 29vw;
     box-sizing: border-box;
 }
 
 .watchContainer{
+    // width: 99vw;
     display: flex;
     padding: 24px;
 }

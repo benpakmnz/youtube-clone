@@ -19,11 +19,11 @@ class Watch extends Component{
     }
 
     componentDidMount(){
+        console.log(this.props)
         this.setData()
     }
 
     componentDidUpdate(prevProps) {
-        console.log('update '+ this.props.match.params.id)
         if(this.props.match.params.id !== prevProps.match.params.id){
            this.setData();
         }      
@@ -48,7 +48,7 @@ class Watch extends Component{
 
         return(
             
-            <div className="mainContainer watchContainer">
+            <div className="watchContainer">
 
                 <div className= "mainWatch">
                     <iframe className= 'player' width='100%' src={embedUrl} frameBorder="0" 
@@ -85,7 +85,7 @@ class Watch extends Component{
                             </div>
                         </div>
                     </div>
-                    <div style={{display: 'flex', alignItems: 'top', width: '100%', margin: '30px 0'}}>
+                    <div style={{display: 'flex', alignItems: 'top', width: '100%', margin: '30px 0', borderBottom: 'rgba(0, 0, 0, 0.1) 1px solid'}}>
                         <img src={this.props.movieChannel.Thumbnail}
                             style={{width:48, height: 48, borderRadius: 48, marginRight: 15}} alt= 'channelProfilePic'/>
                         <div>
@@ -96,15 +96,15 @@ class Watch extends Component{
 
                         {this.state.descriptionFull? 
                             movie.Description: movie.DescriptionShorten}
-                            <p onClick={this.descHandler}>SHOW MORE</p>                   
+                            <p onClick={this.descHandler}>{this.state.descriptionFull?'SHOW LESS': 'SHOW MORE'}</p>                   
                         </div>
                     </div>
 
                     <div>
-                        <h2>Comments</h2>
+                        <h2>{movie.CommentsCount} Comments</h2>
                         {this.props.selectedMovieComments.map(item => 
                                 <div style={{display: 'flex', width: '100%', margin: '30px 0'}} 
-                                    key={item.AuthorDisplayName}>                              
+                                    key={item.CommentId}>                              
                                     <img style={{width:40, height: 40, borderRadius: 40, marginRight: 15}} 
                                         src={item.UserPic} alt= 'pic'/>
                                     <div style={{width: '90%'}}>

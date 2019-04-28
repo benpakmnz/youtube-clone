@@ -4,7 +4,7 @@ import Drawer from './components/drawer/drawer';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './normalize.css';
 import Main from './components/main/main';
-import Watch from './components/watch/watch'
+// import Watch from './components/watch/watch'
 import * as actionCreators from './store/actions/index'
 
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 class App extends Component { 
 
   componentDidMount(){
+    console.log(this.props)
     this.props.setMoviesList()  
   }
 
@@ -21,9 +22,10 @@ class App extends Component {
       <BrowserRouter>
         <ToolBar/>
         {this.props.drawerMode? <Drawer/> : null}
-        <Route path="/" exact render={()=> <Main drawerMode={this.props.drawerMode}/>}/>
+        <Main drawerMode={this.props.drawerMode}/>
+        {/* <Route path="/" exact render={()=> <Main drawerMode={this.props.drawerMode}/>}/>
         <Route path="/trending" render={()=> <h1>dfgfdgfdg</h1>}/>
-        <Route path="/watch/:id" render={()=> <Watch drawerMode={this.props.drawerMode}/>}/>
+        <Route path="/:id" render={()=> <Watch drawerMode={this.props.drawerMode}/>}/>  */}
       </BrowserRouter>
 
 
