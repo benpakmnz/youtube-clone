@@ -13,13 +13,13 @@ import { connect } from 'react-redux';
 class App extends Component { 
 
   componentDidMount(){
-    console.log(this.props)
+    console.log(window.location.pathname)
     this.props.setMoviesList()  
   }
 
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename= {window.location.pathname}>
         <ToolBar/>
         {this.props.drawerMode? <Drawer/> : null}
         <Main drawerMode={this.props.drawerMode}/>

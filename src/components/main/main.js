@@ -9,7 +9,7 @@ import Watch from '../watch/watch'
 class Main extends Component {
         render(){
         console.log(this.props)
-        console.log('12:51')
+        console.log('13:23')
 
         return(
                 <div className="mainContainer" 
