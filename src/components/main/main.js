@@ -14,7 +14,7 @@ class Main extends Component {
                         style={{width: this.props.drawerMode ? `calc(100vw - 240px)` : '100vw',
                         padding: this.props.drawerMode ? '1px 128px': '1px 40px'}}>
                                 
-                                <Route path= {this.props.match.url} exact render={()=> <MoviesList type='home'/>}/>
+                                <Route path="/" exact render={()=> <MoviesList type='home'/>}/>
                                 <Route path={this.props.match.url + ":id"} render={()=> <Watch/>}/>
                 </div>     
         )}
