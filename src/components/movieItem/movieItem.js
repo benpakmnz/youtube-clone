@@ -7,7 +7,7 @@ import './movieItem.scss';
 const MovieItem = (props) => (
         
         <div className={props.type === 'home' ? 'movieItemContainer home': 'movieItemContainer'}>
-            <Link to={`${props.videoId}`} style={props.type !== 'home' ? {flexDirection: 'row'} : null}>
+            <Link to={`/watch/${props.videoId}`} style={props.type !== 'home' ? {flexDirection: 'row'} : null}>
                 <div className={props.type === 'home' ? 'thumbnail' : 'thumbnail small'} >
                     <div className='duration'>{props.duration}</div>              
                     <img src= {props.img} alt={props.title}/></div>

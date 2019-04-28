@@ -48,7 +48,7 @@ class Watch extends Component{
 
         return(
             
-            <div className="watchContainer">
+            <div className="mainContainer watchContainer">
 
                 <div className= "mainWatch">
                     <iframe className= 'player' width='100%' src={embedUrl} frameBorder="0" 

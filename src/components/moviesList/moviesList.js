@@ -14,7 +14,7 @@ class MoviesList extends Component{
 
     render(){                
             return(
-            <div style={{maxWidth: 1284}}>
+            <div style={{maxWidth: 1284, margin:'auto'}}>
             <h2 style={{margin: '25px 0'}}>Recommended</h2>
             <div className="movieListContainer">
                         {this.props.moviesList.map(movieItem => 
