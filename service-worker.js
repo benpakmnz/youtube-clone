@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/youtubeClone/precache-manifest.7b07f276613f3c38a0c8a986e3eae29c.js"
+  "/youtubeClone/precache-manifest.dd4e32f243be34876dacd0a1d0da3b1f.js"
 );
 
 workbox.clientsClaim();
