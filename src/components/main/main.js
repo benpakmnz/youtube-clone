@@ -9,7 +9,7 @@ import Watch from '../watch/watch'
 class Main extends Component {
         render(){
         console.log(this.props)
-        console.log('12:40')
+        console.log('12:51')
 
         return(
                 <div className="mainContainer" 
@@ -17,7 +17,7 @@ class Main extends Component {
                         padding: this.props.drawerMode ? '1px 128px': '1px 40px'}}>
                                 
                                 <Route path="/" exact render={()=> <MoviesList type='home'/>}/>
-                                <Route path={this.props.match.url + ":id"} exact render={()=> <Watch/>}/>
+                                <Route path={this.props.match.url + ":id"} render={()=> <Watch/>}/>
                 </div>     
         )}
 }
