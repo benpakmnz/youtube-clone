@@ -9,13 +9,15 @@ import Watch from '../watch/watch'
 class Main extends Component {
         render(){
         console.log(this.props)
+        console.log('12:40')
+
         return(
                 <div className="mainContainer" 
                         style={{width: this.props.drawerMode ? `calc(100vw - 240px)` : '100vw',
                         padding: this.props.drawerMode ? '1px 128px': '1px 40px'}}>
                                 
                                 <Route path="/" exact render={()=> <MoviesList type='home'/>}/>
-                                <Route path={this.props.match.url + ":id"} render={()=> <Watch/>}/>
+                                <Route path={this.props.match.url + ":id"} exact render={()=> <Watch/>}/>
                 </div>     
         )}
 }
