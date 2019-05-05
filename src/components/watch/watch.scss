@@ -49,7 +49,7 @@
     .interactionActions{
         margin: 0 5px 0 15px;
         svg{
-            fill: map-get($colors, ytGrey);
+            fill: map-get($colors, ytMidGrey);
             width: 20px;
             height: 20px;
         }
@@ -63,5 +63,30 @@
             height: 20px;
         }
     }
+
+
+    .commentInteractionActions{
+        // margin: 0 10px 0 0;
+        svg{
+            fill: map-get($colors, ytMidGrey);
+            width: 15px;
+            height: 15px;
+        }
+        
+    }
+    .commentInteractionActionsSelected{
+        // margin: 0 10px 0 0;
+        svg{
+            fill: map-get($colors, ytBlue);
+            width: 15px;
+            height: 15px;
+        }
+    }
+}
+
+.commentData{
+    color: map-get($colors, ytMidGrey);
+    size: 13px;
+
 }
 

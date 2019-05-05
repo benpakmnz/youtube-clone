@@ -3,6 +3,7 @@ import MovieItem from '../movieItem/movieItem';
 import { connect } from 'react-redux';
 
 
+
 import './moviesList.scss'
 
 

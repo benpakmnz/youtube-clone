@@ -42,16 +42,29 @@ class Watch extends Component{
         })
     }
 
+    // reorderComments = (commentsArr) => {
+    //     let reorderdComments = []
+    //     commentsArr.forEach(element => {
+    //         let parsedDate = Date.parse(new Date(element.PublishdAtSource))
+    //         parsedDate >= Date.parse(new Date(reorderdComments.indexOf(reorderdComments.length-1).PublishdAtSource))?
+    //         reorderdComments.push(element) : reorderdComments.unshift(element)
+    //     })
+    //     console.log(reorderdComments)
+    //     this.commentsArr = reorderdComments
+    // }
+    
+    
     render(){
+        // let commentsArr = this.props.selectedMovieComments
         const movie =  this.props.selectedMovieData
-        let embedUrl= `https://www.youtube.com/embed/${this.props.match.params.id}`
+        
 
         return(
             
             <div className="mainContainer watchContainer">
 
                 <div className= "mainWatch">
-                    <iframe className= 'player' width='100%' src={embedUrl} frameBorder="0" 
+                    <iframe className= 'player' width='100%' src={movie.VideoIdEmbedUrl} frameBorder="0" 
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
                             allowFullScreen>
                     </iframe>
@@ -62,7 +75,7 @@ class Watch extends Component{
                             <div className='usersInteractions'>
                                 <div style={{display:'flex', alignItems:'center'}} 
                                      className={movie.ReactionMode ==='like' ? 'selected': null}
-                                     onClick={() => this.props.reactionHandler('like')}>
+                                     onClick={() => this.props.reactionHandler('like','movie')}>
                                         <IconsContainer 
                                             className={movie.ReactionMode ==='like' ? 'interactionActionsSelected':'interactionActions' }
                                             path={toolBarIcons.userActionsIcons.likeIcon}/>
@@ -70,7 +83,7 @@ class Watch extends Component{
                                 </div>
                                 <div style={{display:'flex', alignItems:'center'}} 
                                      className={movie.ReactionMode ==='dislike' ? 'selected': null}
-                                     onClick={() => this.props.reactionHandler('dislike')}>   
+                                     onClick={() => this.props.reactionHandler('dislike','movie')}>   
                                         <IconsContainer 
                                             className={movie.ReactionMode ==='dislike' ? 'interactionActionsSelected':'interactionActions' } 
                                             path={toolBarIcons.userActionsIcons.dislikeIcon}/>
@@ -101,20 +114,44 @@ class Watch extends Component{
                     </div>
 
                     <div>
-                        <h2>{movie.CommentsCount} Comments</h2>
-                        {this.props.selectedMovieComments.map(item => 
-                                <div style={{display: 'flex', width: '100%', margin: '30px 0'}} 
+                        <h2>{this.props.selectedMovieComments.length} Comments</h2>
+                        
+                        <ul>{this.props.selectedMovieComments.map(item => 
+                                <li><div style={{display: 'flex', width: '100%', margin: '15px 0'}} 
                                     key={item.CommentId}>                              
                                     <img style={{width:40, height: 40, borderRadius: 40, marginRight: 15}} 
                                         src={item.UserPic} alt= 'pic'/>
                                     <div style={{width: '90%'}}>
-                                        <div>{item.AuthorDisplayName} {item.PublishedAt}</div>
+                                        <div>{item.AuthorDisplayName}</div>
                                         <div dangerouslySetInnerHTML={{ __html: item.Comment}}></div>
+                                        <div className="commentData" style={{margin: '5px 0'}}>{item.PublishedAt}</div>
+                                    
+
+                                    <div className='usersInteractions'>
+                                        <div style={{display:'flex', alignItems:'center'}} 
+                                            className={item.ReactionMode ==='like' ? 'selected': null}
+                                            onClick={() => this.props.reactionHandler('like','comment',item.CommentId)}>
+                                                <IconsContainer style={{margin: 30}}
+                                                    className={item.ReactionMode ==='like' ? 'commentInteractionActionsSelected':'commentInteractionActions'}
+                                                    path={toolBarIcons.userActionsIcons.likeIcon}/>
+                                                <p style={{margin:'0 5px'}}>{item.LikeCount > 0 ? item.LikeCount : null }</p>
+                                                
+                                        </div>
+                                        <div style={{display:'flex', alignItems:'center'}} 
+                                            className={item.ReactionMode ==='dislike' ? 'selected': null}
+                                            onClick={() => this.props.reactionHandler('dislike','comment',item.CommentId)}>   
+                                                <IconsContainer 
+                                                    style={{margin:'0px 1px'}}
+                                                    className={item.ReactionMode ==='dislike' ? 'commentInteractionActionsSelected':'commentInteractionActions'} 
+                                                    path={toolBarIcons.userActionsIcons.dislikeIcon}/>
+                                                    
+                                        </div>
+                                        <p style={{marginLeft: 10}} className="commentData">REPLY</p>
                                     </div>
-                                    <hr/>
-                                </div>
+                                    </div>
+                                    </div></li>
                         )}
-                    
+                    </ul>
                     </div>
                 </div>
                 <div className= "upNextVideos">
@@ -142,7 +179,7 @@ const mapDispatchToProps = dispatch => {
         changeDrawer: (mode) => dispatch(actionCreators.changeDrawerMode(mode)),
         setWatchMovie: (videoID) => dispatch(actionCreators.fetchWatchMovie(videoID)),
         initSelectedMovieComments: (videoID)=> dispatch(actionCreators.initMovieComments(videoID)),
-        reactionHandler: (rectionType) => dispatch(actionCreators.reactionHandler(rectionType))
+        reactionHandler: (reactionMode,reactiontype,reactionid) => dispatch(actionCreators.reactionHandler(reactionMode,reactiontype,reactionid))
 
     }
 }

@@ -1,8 +1,8 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-
 const API_KEY = `${process.env.REACT_APP_API_KEY_YT}`
+const DATA_URL = `${process.env.REACT_APP_DATA_URL}`
 
 export const formatDate = publishedDate  => {
     const pub = new Date(publishedDate)
@@ -68,6 +68,7 @@ export const description = description => {
         return desc
     }
 }
+
 export const setMovieList = (payload) => {
     const durationHandler = formatDuration(payload.contentDetails.duration) 
     const publishedDateHandler = formatDate(payload.snippet.publishedAt)  
@@ -96,26 +97,15 @@ export const setMovieList = (payload) => {
 }
 
 export const initMovies = () => {
-    let moviesInitialList = [
-        'KMX1mFEmM3E',
-        'UtIOMUQ7nWM',
-        'wwUbI2i_LZM',
-        '_mj72QqsOs4',
-        '9ooYYRLdg_g',
-        'OAR0E72hFyA',
-        'pkdgVYehiTE',
-        'RRJo_TXdqPg',
-    ]
-
     return dispatch => { 
-        moviesInitialList.forEach(movieTitle => {
-            axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${movieTitle}&key=${API_KEY}`)
+            axios.get(DATA_URL)
             .then(res => {
-                dispatch(setMovieList(res.data.items[0]))})
-                .catch(error => console.log(error))
-        })
-        
-    }
+                res.data.forEach(movieTitle => { 
+                    dispatch(setMovieList(movieTitle))
+                })
+            })
+            .catch(error => console.log(error))
+            }
 }
 
 export const setSelectedMovieData = (payload) => {
@@ -140,7 +130,8 @@ export const setSelectedMovieData = (payload) => {
             CommentsCount: payload.statistics.commentCount,
             Description: payload.snippet.description,
             DescriptionShorten: description(payload.snippet.description),
-            VideoId: payload.id,
+            VideoIdEmbedUrl: `https://www.youtube.com/embed/${payload.id}`,
+            VideoIdId: payload.id,
             ReactionMode: null
             }
     }
@@ -175,7 +166,15 @@ export const initChannelData = (ChannelID) => {
     }
 }
 
-export const setSelectedMovieComments = (payload) =>{
+// export const reorderComments = comment => {
+//     let reorderdComments = []
+//         let parsedDate = Date.parse(new Date(comment.snippet.topLevelComment.snippet.publishedAt))
+//         parsedDate >= Date.parse(new Date(reorderdComments.indexOf(reorderdComments.length-1).snippet.topLevelComment.snippet.publishedAt))?
+//         reorderdComments.push(comment) : reorderdComments.unshift(comment)
+//     return reorderdComments
+// }
+
+export const setSelectedMovieComments = (payload) => {
     const pubdate = formatDate(payload.snippet.topLevelComment.snippet.publishedAt)
 
     return {
@@ -185,28 +184,53 @@ export const setSelectedMovieComments = (payload) =>{
             Comment: payload.snippet.topLevelComment.snippet.textDisplay,
             UserPic: payload.snippet.topLevelComment.snippet.authorProfileImageUrl.replace('s28','s40'),
             AuthorDisplayName: payload.snippet.topLevelComment.snippet.authorDisplayName,
+            LikeCount: payload.snippet.topLevelComment.snippet.likeCount,
+            DislikeCount: payload.snippet.topLevelComment.snippet.dislikeCount? payload.snippet.topLevelComment.snippet.dislikeCount : 0 ,
+            ReactionMode: null,
+            PublishdAtSource: payload.snippet.topLevelComment.snippet.publishedAt,
             PublishedAt: pubdate
         }
         
     }
-} 
+}
 
-export const initMovieComments = (MovieId) => {
-    return dispatch => {
-        axios.get(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${MovieId}&key=${API_KEY}`)
-        .then(res => {
-            console.log(res.data)
-            res.data.items.map(comment => 
-            dispatch(setSelectedMovieComments(comment)))})
-            .catch(error => console.log(error))
-        
+export const setSelectedMovieDataComments = (payload) => {
+    return {
+        type: actionTypes.SET_MOVIE_DATA_COMMENTS,
+        payload    
     }
 }
 
-export const reactionHandler = (payload) => {
-    return {
-        type: actionTypes.REACTION_ADJUSMENTS,
-        payload
+export const initMovieComments = (MovieId) => {
+    return dispatch => {
+        axios.all([
+            axios.get(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${MovieId}&key=${API_KEY}`),
+            axios.get(`https://yt-clone-e7862.firebaseio.com/comments/${MovieId}.json`)
+        ])
+        .then(axios.spread((res1, res2) => {
+            console.log(res1)
+            res1.data.items.map(comment => 
+            dispatch(setSelectedMovieComments(comment)))
+            res2.data.map(comment => 
+                dispatch(setSelectedMovieDataComments(comment)))
+            }))
+            .catch(error => console.log(error))
     }
+}
+
+export const reactionHandler = (reactionMode,reactiontype,reactionid) => {
+    console.log(reactionMode,reactiontype,reactionid)
+        if (reactiontype === 'movie'){ 
+        return {
+            type: actionTypes.MOVIE_REACTION_ADJUSMENTS,
+            reaction: reactionMode
+        }
+        }else if (reactiontype === 'comment'){
+            return{
+            type: actionTypes.COMMENT_REACTION_ADJUSMENTS,
+            reaction: reactionMode,
+            id:reactionid
+        }
+}
 }
 

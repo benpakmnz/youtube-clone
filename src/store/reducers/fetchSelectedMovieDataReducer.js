@@ -22,39 +22,88 @@ const fetchSelectedMovieData = (state= initialState, action) => {
             return ({
                 ...state,
                 movieComments: [action.payload, ...state.movieComments]
-            })    
-        case actionTypes.REACTION_ADJUSMENTS:
-            const reactionAdj = {...state.movieData}
-            if(action.payload === 'like'){
-                if(reactionAdj.ReactionMode === action.payload){
-                    reactionAdj.ReactionMode = null
-                    reactionAdj.LikeCount--
-                }else if (reactionAdj.ReactionMode === null){
-                    reactionAdj.LikeCount++
-                    reactionAdj.ReactionMode = action.payload
-                }else if(reactionAdj.ReactionMode === 'dislike'){
-                    reactionAdj.DislikeCount--
-                    reactionAdj.LikeCount++
-                    reactionAdj.ReactionMode = action.payload
+            })   
+        case actionTypes.SET_MOVIE_DATA_COMMENTS: 
+            return ({
+                ...state,
+                movieComments: [action.payload, ...state.movieComments]
+            })   
+        
+        case actionTypes.MOVIE_REACTION_ADJUSMENTS:
+            let movieReactionAdj = {...state.movieData}
+
+            if(action.reaction === 'like'){
+                if(movieReactionAdj.ReactionMode === action.reaction){
+                    movieReactionAdj.ReactionMode = null
+                    movieReactionAdj.LikeCount--
+                }else if (movieReactionAdj.ReactionMode === null){
+                    movieReactionAdj.LikeCount++
+                    movieReactionAdj.ReactionMode = action.reaction
+                }else if(movieReactionAdj.ReactionMode === 'dislike'){
+                    movieReactionAdj.DislikeCount--
+                    movieReactionAdj.LikeCount++
+                    movieReactionAdj.ReactionMode = action.reaction
                 }
-            }else if(action.payload === 'dislike'){
-                if(reactionAdj.ReactionMode === action.payload){
-                    reactionAdj.ReactionMode = null
-                    reactionAdj.DislikeCount--
-                }else if (reactionAdj.ReactionMode === null){
-                    reactionAdj.DislikeCount++
-                    reactionAdj.ReactionMode = action.payload
-                }else if(reactionAdj.ReactionMode === 'like'){
-                    reactionAdj.DislikeCount++
-                    reactionAdj.LikeCount--
-                    reactionAdj.ReactionMode = action.payload
+            }else if(action.reaction === 'dislike'){
+                if(movieReactionAdj.ReactionMode === action.reaction){
+                    movieReactionAdj.ReactionMode = null
+                    movieReactionAdj.DislikeCount--
+                }else if (movieReactionAdj.ReactionMode === null){
+                    movieReactionAdj.DislikeCount++
+                    movieReactionAdj.ReactionMode = action.reaction
+                }else if(movieReactionAdj.ReactionMode === 'like'){
+                    movieReactionAdj.DislikeCount++
+                    movieReactionAdj.LikeCount--
+                    movieReactionAdj.ReactionMode = action.reaction
                 }
             }
 
          return ({
             ...state,
-            movieData: reactionAdj 
-        })    
+            movieData: movieReactionAdj 
+        }) 
+        
+        
+        case actionTypes.COMMENT_REACTION_ADJUSMENTS:
+        let commentReactionAdj = state.movieComments.filter(comment => comment.CommentId === action.id)
+        let commentIndex = state.movieComments.findIndex(comment => comment.CommentId === action.id)
+        console.log(commentIndex)
+        console.log(commentReactionAdj)
+        let commentReactionAdjRest = [...state.movieComments]
+
+        if(action.reaction === 'like'){
+            if(commentReactionAdj[0].ReactionMode === action.reaction){
+                commentReactionAdj[0].LikeCount--
+                commentReactionAdj[0].ReactionMode = ""
+            }else if (commentReactionAdj[0].ReactionMode === null || commentReactionAdj[0].ReactionMode === ""){
+                commentReactionAdj[0].LikeCount++
+                commentReactionAdj[0].ReactionMode = action.reaction
+            }else if(commentReactionAdj[0].ReactionMode === 'dislike'){
+                commentReactionAdj[0].DislikeCount--
+                commentReactionAdj[0].LikeCount++
+                commentReactionAdj[0].ReactionMode = action.reaction
+            }
+        }else if(action.reaction === 'dislike'){
+            if(commentReactionAdj[0].ReactionMode === action.reaction){
+                commentReactionAdj[0].ReactionMode = ""
+                commentReactionAdj[0].DislikeCount--
+            }else if (commentReactionAdj[0].ReactionMode === null || commentReactionAdj[0].ReactionMode === ""){
+                commentReactionAdj[0].DislikeCount++
+                commentReactionAdj[0].ReactionMode = action.reaction
+            }else if(commentReactionAdj[0].ReactionMode === 'like'){
+                commentReactionAdj[0].DislikeCount++
+                commentReactionAdj[0].LikeCount--
+                commentReactionAdj[0].ReactionMode = action.reaction
+            }
+        }
+
+        commentReactionAdjRest.splice(commentIndex, 1 , commentReactionAdj[0])
+        console.log(commentReactionAdjRest)
+
+     return ({
+        ...state,
+        movieComments: commentReactionAdjRest
+    })  
 
         default: return state
     }
