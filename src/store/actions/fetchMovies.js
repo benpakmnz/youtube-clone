@@ -166,14 +166,6 @@ export const initChannelData = (ChannelID) => {
     }
 }
 
-// export const reorderComments = comment => {
-//     let reorderdComments = []
-//         let parsedDate = Date.parse(new Date(comment.snippet.topLevelComment.snippet.publishedAt))
-//         parsedDate >= Date.parse(new Date(reorderdComments.indexOf(reorderdComments.length-1).snippet.topLevelComment.snippet.publishedAt))?
-//         reorderdComments.push(comment) : reorderdComments.unshift(comment)
-//     return reorderdComments
-// }
-
 export const setSelectedMovieComments = (payload) => {
     const pubdate = formatDate(payload.snippet.topLevelComment.snippet.publishedAt)
 
@@ -201,16 +193,22 @@ export const setSelectedMovieDataComments = (payload) => {
     }
 }
 
+export const clearCommentsList = (dataMode) => {
+    return {
+    type: actionTypes.CLEAR_COMMENTS_LIST,
+    payload: dataMode
+    }
+}
+
 export const initMovieComments = (MovieId) => {
-    return dispatch => {
+    return dispatch => {   
         axios.all([
             axios.get(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${MovieId}&key=${API_KEY}`),
             axios.get(`https://yt-clone-e7862.firebaseio.com/comments/${MovieId}.json`)
         ])
         .then(axios.spread((res1, res2) => {
-            console.log(res1)
             res1.data.items.map(comment => 
-            dispatch(setSelectedMovieComments(comment)))
+                dispatch(setSelectedMovieComments(comment)))
             res2.data.map(comment => 
                 dispatch(setSelectedMovieDataComments(comment)))
             }))

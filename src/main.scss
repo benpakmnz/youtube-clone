@@ -73,3 +73,19 @@ ul{
     -webkit-margin-after: 0;
     margin-block-end: 0;
 }
+.dropdown-list{
+    position: absolute;
+    background: white;
+    color: get-map($colors, ytGrey);
+    padding: 15px;
+    width: 300px;
+    box-shadow: $shadow;
+    top: 50px;
+    z-index: 700; 
+    font-weight: $main-fontWeight;
+}
+
+.dropdownContainer{
+    display: flex;
+    flex-direction: column;
+}

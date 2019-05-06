@@ -4,6 +4,9 @@ import { withRouter } from 'react-router-dom';
 import MoviesList from '../moviesList/moviesList';
 import IconsContainer from '../../assets/iconsContainer';
 import toolBarIcons from '../../assets/iconsPath';
+import Comments from './comments';
+import Backdrop from '../UI/Backdrop/Backdrop'
+import Spinner from '../UI/Spinner/Spinner'
 import { connect } from 'react-redux';
 import * as actionCreators from '../../store/actions/index';
 import './watch.scss';
@@ -15,54 +18,98 @@ class Watch extends Component{
         super(props);
         this.state= {
             descriptionFull: false,
+            commentsOrder: 'UnOrederd',
+            commentsArr: ''
         }
     }
 
     componentDidMount(){
         console.log(this.props)
-        this.setData()
+        this.setData('new')
     }
 
     componentDidUpdate(prevProps) {
         if(this.props.match.params.id !== prevProps.match.params.id){
-           this.setData();
+           this.setData('refresh');
+           this.setState({
+                 descriptionFull: false,
+                 commentsOrder: 'UnOrederd',
+                 commentsArr: '',
+                 sortCommentsDropdown: false
+           })
         }      
         
     }
 
-    setData(){
+    setData(dataMode){
         this.props.setWatchMovie(this.props.match.params.id)
-        this.props.changeDrawer(false)        
-        this.props.initSelectedMovieComments(this.props.match.params.id)
+        this.props.changeDrawer(false)  
+        if(dataMode === 'refresh'){ 
+            this.props.clearCommentsList(dataMode)
+        }
+
+        this.props.initSelectedMovieComments(this.props.match.params.id, dataMode)
+        console.log(this.state)
     }
- 
+
     descHandler = () => {
         this.setState({
             descriptionFull: !this.state.descriptionFull
         })
     }
-
-    // reorderComments = (commentsArr) => {
-    //     let reorderdComments = []
-    //     commentsArr.forEach(element => {
-    //         let parsedDate = Date.parse(new Date(element.PublishdAtSource))
-    //         parsedDate >= Date.parse(new Date(reorderdComments.indexOf(reorderdComments.length-1).PublishdAtSource))?
-    //         reorderdComments.push(element) : reorderdComments.unshift(element)
-    //     })
-    //     console.log(reorderdComments)
-    //     this.commentsArr = reorderdComments
-    // }
     
+    reorderCommentsWinOpen = () => {
+        console.log('fdfsf')
+        this.setState({
+            sortCommentsDropdown: true
+        })
+    }
+
+    reorderCommentsWin = () => {
+        return(
+            <div style={{boxSizing: 'border-box', Width: 125.781, zIndex: 700 ,position: 'absolute', margin: '70px 100px',background: 'white', padding: '8px 0', boxShadow: '0 7px 30px -13px #626262'}}>
+            <ul>
+                <li style={{height: 48, width: 150, display: 'flex', justifyContent:'center', alignItems: 'center'}} onClick={() => this.reorderComments('liked')}>Top comments</li>
+                <li li style={{height: 48, width: 150, display: 'flex', justifyContent:'center', alignItems: 'center'}} onClick={() => this.reorderComments('date')}>Newest first</li> 
+            </ul>
+            </div>
+        )
+    }
+        reorderCommentsWinClose = () => {
+            console.log('close')
+            this.setState({
+                sortCommentsDropdown: false
+            })
+
+    }
+    reorderComments = (type) => {
+        console.log(type)
+        let sourceArr = this.props.selectedMovieComments
+        if(type === 'date'){
+            sourceArr.sort((commentA, commentB) => {
+                return (
+                    Date.parse(new Date(commentB.PublishdAtSource)) 
+                    - Date.parse(new Date(commentA.PublishdAtSource)))
+            })
+        }else if(type ==='liked'){
+            sourceArr.sort((commentA, commentB) => {
+                return (commentB.LikeCount - commentA.LikeCount)
+            })
+        }    
+        this.setState({
+            commentsOrder: type,
+            commentsArr: sourceArr,
+            sortCommentsDropdown: false
+        })
+        
+    }
     
     render(){
-        // let commentsArr = this.props.selectedMovieComments
         const movie =  this.props.selectedMovieData
-        
-
         return(
             
             <div className="mainContainer watchContainer">
-
+                {this.props.drawerMode === true ? <Backdrop style={{background:'rgba(0, 0, 0, 0.5)'}} close = {this.props.changeDrawer}/>: null}
                 <div className= "mainWatch">
                     <iframe className= 'player' width='100%' src={movie.VideoIdEmbedUrl} frameBorder="0" 
                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
@@ -114,44 +161,22 @@ class Watch extends Component{
                     </div>
 
                     <div>
-                        <h2>{this.props.selectedMovieComments.length} Comments</h2>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
                         
-                        <ul>{this.props.selectedMovieComments.map(item => 
-                                <li><div style={{display: 'flex', width: '100%', margin: '15px 0'}} 
-                                    key={item.CommentId}>                              
-                                    <img style={{width:40, height: 40, borderRadius: 40, marginRight: 15}} 
-                                        src={item.UserPic} alt= 'pic'/>
-                                    <div style={{width: '90%'}}>
-                                        <div>{item.AuthorDisplayName}</div>
-                                        <div dangerouslySetInnerHTML={{ __html: item.Comment}}></div>
-                                        <div className="commentData" style={{margin: '5px 0'}}>{item.PublishedAt}</div>
-                                    
+                            <h2>{this.props.selectedMovieComments.length} Comments</h2>
+                            <div style={{display: 'flex', alignItems: 'center',justifyContent: 'space-between',width: 86, marginLeft: 20}} onClick={this.reorderCommentsWinOpen}> 
+                            <IconsContainer path={toolBarIcons.sortIcon}/>
+                                            SORT BY
+                            </div>
+                            {this.state.sortCommentsDropdown === true ? this.reorderCommentsWin() : null}
+                            {this.state.sortCommentsDropdown === true ?<Backdrop close = {this.reorderCommentsWinClose}/>: null}
+                            
+                        </div>
+                        <Comments movieComments={
+                                    this.state.commentsOrder === 'UnOrederd' ? 
+                                    this.props.selectedMovieComments : this.state.commentsArr}   
+                                    reactionHandle={this.props.reactionHandler}/>
 
-                                    <div className='usersInteractions'>
-                                        <div style={{display:'flex', alignItems:'center'}} 
-                                            className={item.ReactionMode ==='like' ? 'selected': null}
-                                            onClick={() => this.props.reactionHandler('like','comment',item.CommentId)}>
-                                                <IconsContainer style={{margin: 30}}
-                                                    className={item.ReactionMode ==='like' ? 'commentInteractionActionsSelected':'commentInteractionActions'}
-                                                    path={toolBarIcons.userActionsIcons.likeIcon}/>
-                                                <p style={{margin:'0 5px'}}>{item.LikeCount > 0 ? item.LikeCount : null }</p>
-                                                
-                                        </div>
-                                        <div style={{display:'flex', alignItems:'center'}} 
-                                            className={item.ReactionMode ==='dislike' ? 'selected': null}
-                                            onClick={() => this.props.reactionHandler('dislike','comment',item.CommentId)}>   
-                                                <IconsContainer 
-                                                    style={{margin:'0px 1px'}}
-                                                    className={item.ReactionMode ==='dislike' ? 'commentInteractionActionsSelected':'commentInteractionActions'} 
-                                                    path={toolBarIcons.userActionsIcons.dislikeIcon}/>
-                                                    
-                                        </div>
-                                        <p style={{marginLeft: 10}} className="commentData">REPLY</p>
-                                    </div>
-                                    </div>
-                                    </div></li>
-                        )}
-                    </ul>
                     </div>
                 </div>
                 <div className= "upNextVideos">
@@ -169,7 +194,8 @@ const mapStateToProps = state =>{
         watchMovie: state.fetchMoviesReducer.watchMovieData,
         movieChannel: state.fetchSelectedMovieDataReducer.movieChannel,
         selectedMovieComments: state.fetchSelectedMovieDataReducer.movieComments,
-        selectedMovieData: state.fetchSelectedMovieDataReducer.movieData
+        selectedMovieData: state.fetchSelectedMovieDataReducer.movieData,
+        drawerMode: state.drawerModeReducer.drawerMode
     }
 }
 
@@ -178,7 +204,8 @@ const mapDispatchToProps = dispatch => {
     return{
         changeDrawer: (mode) => dispatch(actionCreators.changeDrawerMode(mode)),
         setWatchMovie: (videoID) => dispatch(actionCreators.fetchWatchMovie(videoID)),
-        initSelectedMovieComments: (videoID)=> dispatch(actionCreators.initMovieComments(videoID)),
+        clearCommentsList: () => dispatch(actionCreators.clearCommentsList()),
+        initSelectedMovieComments: (videoID, dataMode)=> dispatch(actionCreators.initMovieComments(videoID, dataMode)),
         reactionHandler: (reactionMode,reactiontype,reactionid) => dispatch(actionCreators.reactionHandler(reactionMode,reactiontype,reactionid))
 
     }

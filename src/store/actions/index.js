@@ -10,5 +10,6 @@ export{
     reactionHandler,
     fetchWatchMovie,
     initChannelData,
-    setSelectedMovieDataComments
+    setSelectedMovieDataComments,
+    clearCommentsList
 } from './fetchMovies';

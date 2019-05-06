@@ -27,7 +27,13 @@ const fetchSelectedMovieData = (state= initialState, action) => {
             return ({
                 ...state,
                 movieComments: [action.payload, ...state.movieComments]
-            })   
+            })
+        case actionTypes.CLEAR_COMMENTS_LIST:
+            console.log(action.payload)
+            return({
+                ...state,
+                movieComments: []
+            })
         
         case actionTypes.MOVIE_REACTION_ADJUSMENTS:
             let movieReactionAdj = {...state.movieData}
