@@ -11,5 +11,6 @@ export{
     fetchWatchMovie,
     initChannelData,
     setSelectedMovieDataComments,
-    clearCommentsList
+    clearCommentsList,
+    handleCommentSubmit
 } from './fetchMovies';

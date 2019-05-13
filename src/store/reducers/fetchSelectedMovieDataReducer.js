@@ -34,6 +34,13 @@ const fetchSelectedMovieData = (state= initialState, action) => {
                 ...state,
                 movieComments: []
             })
+        case actionTypes.ADD_COMMENT:
+            console.log(action.payload)
+            return({
+                ...state,
+                movieComments: [action.payload, ...state.movieComments]
+                // movieComments: state.movieComments
+            })
         
         case actionTypes.MOVIE_REACTION_ADJUSMENTS:
             let movieReactionAdj = {...state.movieData}

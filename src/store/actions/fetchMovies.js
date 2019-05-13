@@ -4,16 +4,37 @@ import axios from 'axios';
 const API_KEY = `${process.env.REACT_APP_API_KEY_YT}`
 const DATA_URL = `${process.env.REACT_APP_DATA_URL}`
 
-export const formatDate = publishedDate  => {
+const formatDate = publishedDate  => {
     const pub = new Date(publishedDate)
     const now= new Date(Date.now())
     const _MS_PER_DAY= 1000*60*60*24;
 
-    const utc1= Date.UTC(pub.getFullYear(), pub.getMonth(), pub.getDate());
-    const utc2= Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    const utc1= Date.UTC(pub.getFullYear(), pub.getMonth()+1, pub.getDate(), pub.getHours(), pub.getMinutes());
+    const utc2= Date.UTC(now.getFullYear(), now.getMonth()+1, now.getDate(), now.getHours(), now.getMinutes());
+
     let pubAmount= Math.floor((utc2-utc1)/ _MS_PER_DAY);
 
-    if (pubAmount >= 7 && pubAmount < 14 ){
+    if(pubAmount >= 0 && pubAmount < 1 ){
+      let hoursDif = Math.floor((utc2-utc1)/3600000)
+      if (hoursDif>1){
+        return hoursDif + ' hours ago'
+      }else if(hoursDif === 1){
+        return '1 hour ago'
+      }else if(hoursDif<1){
+        let minutesDif = Math.floor((utc2-utc1)/60000)
+        if(minutesDif>1){
+        return `${minutesDif} minutes ago`
+        }else if(minutesDif===1){
+            return '1 minute ago'
+        }else if(minutesDif<1){
+            return 'just now'
+      }
+      }  
+    }
+    else if (pubAmount >= 1 && pubAmount < 7 ){
+      return `${pubAmount.toFixed()} days ago`
+    }
+    else if (pubAmount >= 7 && pubAmount < 14 ){
         return '1 week ago'
     }
     else if (pubAmount >= 14 && pubAmount < 30){
@@ -22,7 +43,7 @@ export const formatDate = publishedDate  => {
     }
     else if (pubAmount >= 30 && pubAmount < 60){
         return `1 month ago`
-    }
+   }
     else if (pubAmount >= 60 && pubAmount < 365){
         let a = pubAmount/30
         return `${a.toFixed()} months ago`
@@ -107,6 +128,29 @@ export const initMovies = () => {
             .catch(error => console.log(error))
             }
 }
+
+// export const initMovies = () => {
+//     let moviesInitialList = [
+//         'KMX1mFEmM3E',
+//         'UtIOMUQ7nWM',
+//         'wwUbI2i_LZM',
+//         '_mj72QqsOs4',
+//         '9ooYYRLdg_g',
+//         'OAR0E72hFyA',
+//         'pkdgVYehiTE',
+//         'RRJo_TXdqPg',
+//     ]
+
+//     return dispatch => { 
+//         moviesInitialList.forEach(movieTitle => {
+//             axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${movieTitle}&key=${API_KEY}`)
+//             .then(res => {
+//                 dispatch(setMovieList(res.data.items[0]))})
+//                 .catch(error => console.log(error))
+//         })
+        
+//     }
+// }
 
 export const setSelectedMovieData = (payload) => {
     const durationHandler = formatDuration(payload.contentDetails.duration) 
@@ -200,16 +244,17 @@ export const clearCommentsList = (dataMode) => {
     }
 }
 
-export const initMovieComments = (MovieId) => {
+export const initMovieComments = (movieId) => {
     return dispatch => {   
         axios.all([
-            axios.get(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${MovieId}&key=${API_KEY}`),
-            axios.get(`https://yt-clone-e7862.firebaseio.com/comments/${MovieId}.json`)
+            axios.get(`https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${movieId}&key=${API_KEY}`),
+            axios.get(`https://yt-clone-e7862.firebaseio.com/comments/${movieId}.json`)
         ])
         .then(axios.spread((res1, res2) => {
             res1.data.items.map(comment => 
                 dispatch(setSelectedMovieComments(comment)))
-            res2.data.map(comment => 
+            console.log( Object.values(res2))
+            Object.values(res2.data).map(comment =>
                 dispatch(setSelectedMovieDataComments(comment)))
             }))
             .catch(error => console.log(error))
@@ -217,7 +262,6 @@ export const initMovieComments = (MovieId) => {
 }
 
 export const reactionHandler = (reactionMode,reactiontype,reactionid) => {
-    console.log(reactionMode,reactiontype,reactionid)
         if (reactiontype === 'movie'){ 
         return {
             type: actionTypes.MOVIE_REACTION_ADJUSMENTS,
@@ -230,5 +274,29 @@ export const reactionHandler = (reactionMode,reactiontype,reactionid) => {
             id:reactionid
         }
 }
+}
+
+export const handleCommentSubmit = (comment,movieId) => {
+    const time = new Date(Date.now()).toISOString()
+    const timeConverted = formatDate(time)
+    console.log(movieId)
+    const commentPayload = {
+        AuthorDisplayName:'Benny Pakman',
+        Comment: comment,
+        CommentId: comment,
+        DislikeCount: 0,
+        LikeCount: 0,
+        PublishedAt: timeConverted,
+        ReactionMode: "",
+        UserPic: 'https://yt3.ggpht.com/-PcciNQlrmUE/AAAAAAAAAAI/AAAAAAAAAAA/D1j1-rfjOpw/s88-c-k-no-mo-rj-c0xffffff/photo.jpg',
+      }
+      axios.post(`https://yt-clone-e7862.firebaseio.com/comments/${movieId}.json`,commentPayload)
+    console.log(timeConverted)
+    return (
+        {
+        type: actionTypes.ADD_COMMENT,
+        payload: commentPayload
+        }
+    )
 }
 

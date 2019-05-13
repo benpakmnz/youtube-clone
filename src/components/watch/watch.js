@@ -19,13 +19,22 @@ class Watch extends Component{
         this.state= {
             descriptionFull: false,
             commentsOrder: 'UnOrederd',
-            commentsArr: ''
+            commentsArr: '',
+            loader: false
         }
+
+        
     }
 
     componentDidMount(){
-        console.log(this.props)
         this.setData('new')
+            this.setState({
+                  descriptionFull: false,
+                  commentsOrder: 'UnOrederd',
+                  commentsArr: '',
+                  sortCommentsDropdown: false
+            })
+         
     }
 
     componentDidUpdate(prevProps) {
@@ -42,13 +51,14 @@ class Watch extends Component{
     }
 
     setData(dataMode){
+        this.props.initSelectedMovieComments(this.props.match.params.id, dataMode)
         this.props.setWatchMovie(this.props.match.params.id)
         this.props.changeDrawer(false)  
         if(dataMode === 'refresh'){ 
             this.props.clearCommentsList(dataMode)
         }
 
-        this.props.initSelectedMovieComments(this.props.match.params.id, dataMode)
+        this.reorderComments('date')
         console.log(this.state)
     }
 
@@ -64,27 +74,32 @@ class Watch extends Component{
             sortCommentsDropdown: true
         })
     }
-
+    
     reorderCommentsWin = () => {
         return(
             <div style={{boxSizing: 'border-box', Width: 125.781, zIndex: 700 ,position: 'absolute', margin: '70px 100px',background: 'white', padding: '8px 0', boxShadow: '0 7px 30px -13px #626262'}}>
             <ul>
-                <li style={{height: 48, width: 150, display: 'flex', justifyContent:'center', alignItems: 'center'}} onClick={() => this.reorderComments('liked')}>Top comments</li>
-                <li li style={{height: 48, width: 150, display: 'flex', justifyContent:'center', alignItems: 'center'}} onClick={() => this.reorderComments('date')}>Newest first</li> 
+                <li style={{height: 48, width: 150, display: 'flex', justifyContent:'center', alignItems: 'center', background: this.state.commentsOrder === 'liked' ? '#d6d6d6': null}} onClick={() => this.reorderComments('liked')}>Top comments</li>
+                <li li style={{height: 48, width: 150, display: 'flex', justifyContent:'center', alignItems: 'center',background: this.state.commentsOrder === 'date' ? '#d6d6d6': null}} onClick={() => this.reorderComments('date')}>Newest first</li> 
             </ul>
             </div>
         )
     }
-        reorderCommentsWinClose = () => {
-            console.log('close')
+    reorderCommentsWinClose = () => {
             this.setState({
                 sortCommentsDropdown: false
             })
 
     }
     reorderComments = (type) => {
-        console.log(type)
         let sourceArr = this.props.selectedMovieComments
+        this.setState({
+            loader: true,
+            commentsOrder: type,
+            commentsArr: sourceArr,
+            sortCommentsDropdown: false,
+        })
+
         if(type === 'date'){
             sourceArr.sort((commentA, commentB) => {
                 return (
@@ -95,19 +110,21 @@ class Watch extends Component{
             sourceArr.sort((commentA, commentB) => {
                 return (commentB.LikeCount - commentA.LikeCount)
             })
-        }    
-        this.setState({
-            commentsOrder: type,
-            commentsArr: sourceArr,
-            sortCommentsDropdown: false
-        })
-        
+        }  
+        setTimeout(
+            ()=> {
+                this.setState({
+                    loader: false
+                })
+            }, 1000
+        )  
     }
     
+    
     render(){
+        const movieId = this.props.match.params.id
         const movie =  this.props.selectedMovieData
         return(
-            
             <div className="mainContainer watchContainer">
                 {this.props.drawerMode === true ? <Backdrop style={{background:'rgba(0, 0, 0, 0.5)'}} close = {this.props.changeDrawer}/>: null}
                 <div className= "mainWatch">
@@ -159,10 +176,9 @@ class Watch extends Component{
                             <p onClick={this.descHandler}>{this.state.descriptionFull?'SHOW LESS': 'SHOW MORE'}</p>                   
                         </div>
                     </div>
-
-                    <div>
+                    {this.state.loader? <div style={{ position: 'absolute', display: 'flex', justifyContent: 'center',width: 'inherit', height: '100%', background: 'rgba(250, 250, 250, 0.8)'}}><Spinner/></div>:null}
+                    <div>                 
                         <div style={{display: 'flex', alignItems: 'center'}}>
-                        
                             <h2>{this.props.selectedMovieComments.length} Comments</h2>
                             <div style={{display: 'flex', alignItems: 'center',justifyContent: 'space-between',width: 86, marginLeft: 20}} onClick={this.reorderCommentsWinOpen}> 
                             <IconsContainer path={toolBarIcons.sortIcon}/>
@@ -170,14 +186,18 @@ class Watch extends Component{
                             </div>
                             {this.state.sortCommentsDropdown === true ? this.reorderCommentsWin() : null}
                             {this.state.sortCommentsDropdown === true ?<Backdrop close = {this.reorderCommentsWinClose}/>: null}
-                            
                         </div>
+
                         <Comments movieComments={
                                     this.state.commentsOrder === 'UnOrederd' ? 
                                     this.props.selectedMovieComments : this.state.commentsArr}   
-                                    reactionHandle={this.props.reactionHandler}/>
+                                    reactionHandle={this.props.reactionHandler}
+                                    movieId={this.props.match.params.id}
+                                    onCommentSubmit={this.props.handleCommentSubmit}/>
+                                    
 
                     </div>
+                        
                 </div>
                 <div className= "upNextVideos">
                       <MoviesList type='watch'/>   
@@ -206,7 +226,8 @@ const mapDispatchToProps = dispatch => {
         setWatchMovie: (videoID) => dispatch(actionCreators.fetchWatchMovie(videoID)),
         clearCommentsList: () => dispatch(actionCreators.clearCommentsList()),
         initSelectedMovieComments: (videoID, dataMode)=> dispatch(actionCreators.initMovieComments(videoID, dataMode)),
-        reactionHandler: (reactionMode,reactiontype,reactionid) => dispatch(actionCreators.reactionHandler(reactionMode,reactiontype,reactionid))
+        reactionHandler: (reactionMode,reactiontype,reactionid) => dispatch(actionCreators.reactionHandler(reactionMode,reactiontype,reactionid)),
+        handleCommentSubmit: (comment, movieId) => dispatch(actionCreators.handleCommentSubmit(comment, movieId))
 
     }
 }
