@@ -19,8 +19,8 @@ class MoviesList extends Component{
             <h2 style={{margin: '25px 0'}}>Recommended</h2>
             <div className="movieListContainer">
                         {this.props.moviesList.map(movieItem => 
-                            <MovieItem 
-                               title={this.titleShorten(movieItem.Title, 50 , 47)} 
+                            <MovieItem
+                               title={window.innerWidth <= 812 ? movieItem.Title : this.titleShorten(movieItem.Title, 50 , 47)} 
                                img={movieItem.VideoUrl}
                                channel={this.titleShorten(movieItem.ChannelTitle, 35 , 30)}
                                published={movieItem.PublishedAt}

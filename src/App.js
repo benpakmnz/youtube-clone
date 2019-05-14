@@ -14,9 +14,13 @@ class App extends Component {
 
   componentDidMount(){
     this.props.setMoviesList()  
+    if(window.innerWidth <= 812){
+      this.props.changeDrawerMode(false)
+    }
   }
 
   render() {
+    console.log(window.innerWidth)
     return (
       <BrowserRouter basename= {window.location.pathname}>
         <ToolBar/>
@@ -41,7 +45,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      setMoviesList: () => dispatch(actionCreators.initMovies())
+      setMoviesList: () => dispatch(actionCreators.initMovies()),
+      changeDrawerMode: () => dispatch(actionCreators.changeDrawerMode())
   }
 }
 

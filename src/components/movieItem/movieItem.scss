@@ -65,3 +65,10 @@
         font-weight:400;
     }    
 }
+
+@media(max-width: 812px){
+    .movieItemInfo{
+        width: unset;
+    }
+    
+}

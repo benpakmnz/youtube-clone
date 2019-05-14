@@ -9,7 +9,8 @@ class Comments extends Component {
         super(props)
         this.state = {
             inputFocus: false,
-            comment: ''
+            comment: '',
+            commentFocus: ''
         }
         this.comment = React.createRef()
     }
@@ -44,6 +45,11 @@ class Comments extends Component {
             })
             this.comment.current.value= ''
     }
+    handleCommentFocus = (commentId) => {
+        this.setState({
+            commentFocus: commentId
+        })
+    }
 
     
     render(){
@@ -74,7 +80,7 @@ class Comments extends Component {
 
         </li>
         {this.props.movieComments.map(item => 
-        <li key={item.CommentId}>
+        <li key={item.CommentId} onMouseEnter={() => this.handleCommentFocus(item.CommentId)} onMouseLeave={this.handleCommentFocus}>
             <div style={{display: 'flex', width: '100%', margin: '15px 0'}} key={item.CommentId}>                              
                 <img style={{width:40, height: 40, borderRadius: 40, marginRight: 15}} src={item.UserPic} alt= 'pic'/>
                 <div style={{width: '90%'}}>
@@ -97,7 +103,11 @@ class Comments extends Component {
                    <p style={{marginLeft: 10}} className="commentData">REPLY</p>
                 </div>
                 </div>
+                {this.state.commentFocus ===  item.CommentId ? <IconsContainer style={{margin:'0px 1px'}} 
+                             path={toolBarIcons.editIcon}/> : null}
             </div>
+
+
         </li>
         )}
     </ul>

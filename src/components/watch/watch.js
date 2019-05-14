@@ -22,8 +22,6 @@ class Watch extends Component{
             commentsArr: '',
             loader: false
         }
-
-        
     }
 
     componentDidMount(){
@@ -34,7 +32,6 @@ class Watch extends Component{
                   commentsArr: '',
                   sortCommentsDropdown: false
             })
-         
     }
 
     componentDidUpdate(prevProps) {
@@ -122,7 +119,6 @@ class Watch extends Component{
     
     
     render(){
-        const movieId = this.props.match.params.id
         const movie =  this.props.selectedMovieData
         return(
             <div className="mainContainer watchContainer">
@@ -176,6 +172,10 @@ class Watch extends Component{
                             <p onClick={this.descHandler}>{this.state.descriptionFull?'SHOW LESS': 'SHOW MORE'}</p>                   
                         </div>
                     </div>
+                    {window.innerWidth <= 812 ?
+                <div className= "upNextVideos">
+                      <MoviesList type='watch'/>   
+                </div>: null}
                     {this.state.loader? <div style={{ position: 'absolute', display: 'flex', justifyContent: 'center',width: 'inherit', height: '100%', background: 'rgba(250, 250, 250, 0.8)'}}><Spinner/></div>:null}
                     <div>                 
                         <div style={{display: 'flex', alignItems: 'center'}}>
@@ -199,9 +199,10 @@ class Watch extends Component{
                     </div>
                         
                 </div>
+                {window.innerWidth > 900 ?
                 <div className= "upNextVideos">
                       <MoviesList type='watch'/>   
-                </div>
+                </div>: null}
             </div>
         )
     }
