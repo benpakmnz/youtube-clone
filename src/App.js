@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(window.innerWidth)
     return (
       <BrowserRouter basename= {window.location.pathname}>
         <ToolBar/>
