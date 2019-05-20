@@ -56,7 +56,6 @@ class Watch extends Component{
         }
 
         this.reorderComments('date')
-        console.log(this.state)
     }
 
     descHandler = () => {
@@ -66,7 +65,6 @@ class Watch extends Component{
     }
     
     reorderCommentsWinOpen = () => {
-        console.log('fdfsf')
         this.setState({
             sortCommentsDropdown: true
         })

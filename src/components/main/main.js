@@ -5,7 +5,6 @@ import '../../main.scss';
 
 class Main extends Component {
         render(){
-        console.log('13:23')
 
         return(
                 <div className="mainContainer" 

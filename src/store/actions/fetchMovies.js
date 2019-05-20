@@ -253,7 +253,6 @@ export const initMovieComments = (movieId) => {
         .then(axios.spread((res1, res2) => {
             res1.data.items.map(comment => 
                 dispatch(setSelectedMovieComments(comment)))
-            console.log( Object.values(res2))
             Object.values(res2.data).map(comment =>
                 dispatch(setSelectedMovieDataComments(comment)))
             }))
@@ -279,7 +278,6 @@ export const reactionHandler = (reactionMode,reactiontype,reactionid) => {
 export const handleCommentSubmit = (comment,movieId) => {
     const time = new Date(Date.now()).toISOString()
     const timeConverted = formatDate(time)
-    console.log(movieId)
     const commentPayload = {
         AuthorDisplayName:'Benny Pakman',
         Comment: comment,
@@ -291,8 +289,8 @@ export const handleCommentSubmit = (comment,movieId) => {
         UserPic: 'https://yt3.ggpht.com/-PcciNQlrmUE/AAAAAAAAAAI/AAAAAAAAAAA/D1j1-rfjOpw/s88-c-k-no-mo-rj-c0xffffff/photo.jpg',
       }
       axios.post(`https://yt-clone-e7862.firebaseio.com/comments/${movieId}.json`,commentPayload)
-    console.log(timeConverted)
-    return (
+
+      return (
         {
         type: actionTypes.ADD_COMMENT,
         payload: commentPayload

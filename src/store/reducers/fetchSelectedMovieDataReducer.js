@@ -29,17 +29,14 @@ const fetchSelectedMovieData = (state= initialState, action) => {
                 movieComments: [action.payload, ...state.movieComments]
             })
         case actionTypes.CLEAR_COMMENTS_LIST:
-            console.log(action.payload)
             return({
                 ...state,
                 movieComments: []
             })
         case actionTypes.ADD_COMMENT:
-            console.log(action.payload)
-            return({
+             return({
                 ...state,
                 movieComments: [action.payload, ...state.movieComments]
-                // movieComments: state.movieComments
             })
         
         case actionTypes.MOVIE_REACTION_ADJUSMENTS:
@@ -80,8 +77,6 @@ const fetchSelectedMovieData = (state= initialState, action) => {
         case actionTypes.COMMENT_REACTION_ADJUSMENTS:
         let commentReactionAdj = state.movieComments.filter(comment => comment.CommentId === action.id)
         let commentIndex = state.movieComments.findIndex(comment => comment.CommentId === action.id)
-        console.log(commentIndex)
-        console.log(commentReactionAdj)
         let commentReactionAdjRest = [...state.movieComments]
 
         if(action.reaction === 'like'){
@@ -111,7 +106,6 @@ const fetchSelectedMovieData = (state= initialState, action) => {
         }
 
         commentReactionAdjRest.splice(commentIndex, 1 , commentReactionAdj[0])
-        console.log(commentReactionAdjRest)
 
      return ({
         ...state,
